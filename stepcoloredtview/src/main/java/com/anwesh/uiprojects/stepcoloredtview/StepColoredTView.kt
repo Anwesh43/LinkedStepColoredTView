@@ -24,3 +24,35 @@ fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 
+fun Canvas.drawStepColoredT(i : Int, scale : Float, w : Float, paint : Paint) {
+    val gap : Float = w / (colors.size + 1)
+    val sf : Float = scale.sinify()
+    val sfi : Float = sf.divideScale(i, lines)
+    val sfi1 : Float = sfi.divideScale(0, 2)
+    val sfi2 : Float = sfi.divideScale(1, 2)
+    val y : Float = -gap * sfi2
+    save()
+    translate(0f, y)
+    drawLine(-(gap / 2 * sfi1), 0f, (gap / 2 * sfi1), 0f, paint)
+    restore()
+    drawLine(0f, 0f, 0f, y, paint)
+}
+
+fun Canvas.drawColoredTs(scale : Float, w : Float, paint : Paint) {
+    for (j in 0..(lines - 1)) {
+        drawStepColoredT(j, scale, w, paint)
+    }
+}
+
+fun Canvas.drawSCTNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = Color.parseColor(colors[i])
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(w / 2, 0f)
+    drawColoredTs(scale, w, paint)
+    restore()
+}
+

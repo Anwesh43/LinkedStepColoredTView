@@ -182,4 +182,26 @@ class StepColoredTView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : StepColoredTView) {
+
+        private val animator : Animator = Animator(view)
+        private val sct : StepColoredT = StepColoredT(0)
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            sct.draw(canvas, paint)
+            animator.animate {
+                sct.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            sct.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }

@@ -14,7 +14,7 @@ import android.content.Context
 
 val colors : Array<String> = arrayOf("#3F51B5", "#1A237E", "#f44336", "#4CAF50", "#BF360C")
 val lines : Int = 5
-val scGap : Float = 0.02f
+val scGap : Float = 0.02f / lines
 val strokeFactor : Int = 90
 val backColor : Int = Color.parseColor("#BDBDBD")
 val delay : Long = 20
@@ -32,10 +32,13 @@ fun Canvas.drawStepColoredT(i : Int, scale : Float, w : Float, paint : Paint) {
     val sfi2 : Float = sfi.divideScale(1, 2)
     val y : Float = -gap * sfi2
     save()
+    translate(gap * i, 0f)
+    save()
     translate(0f, y)
     drawLine(-(gap / 2 * sfi1), 0f, (gap / 2 * sfi1), 0f, paint)
     restore()
     drawLine(0f, 0f, 0f, y, paint)
+    restore()
 }
 
 fun Canvas.drawColoredTs(scale : Float, w : Float, paint : Paint) {
@@ -51,7 +54,7 @@ fun Canvas.drawSCTNode(i : Int, scale : Float, paint : Paint) {
     paint.strokeCap = Paint.Cap.ROUND
     paint.strokeWidth = Math.min(w, h) / strokeFactor
     save()
-    translate(w / 2, 0f)
+    translate(0f, h / 2)
     drawColoredTs(scale, w, paint)
     restore()
 }

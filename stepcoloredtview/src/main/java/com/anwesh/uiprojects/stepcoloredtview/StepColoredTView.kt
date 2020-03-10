@@ -207,4 +207,13 @@ class StepColoredTView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : StepColoredTView {
+            val view : StepColoredTView = StepColoredTView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
